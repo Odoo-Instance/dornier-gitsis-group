@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="acquirer_form_paynamics" model="ir.ui.view">
+            <field name="name">acquirer.form.paynamics</field>
+            <field name="model">payment.acquirer</field>
+            <field name="inherit_id" ref="payment.acquirer_form"/>
+            <field name="arch" type="xml">
+                <xpath expr='//group[@name="acquirer"]' position='inside'>
+                    <group attrs="{'invisible': [('provider', '!=', 'paynamics')]}">
+                        <field name="paynamics_seller_account" password="True" attrs="{'required':[ ('provider', '=', 'paynamics')]}"/>
+                        <field name="paynamics_pdt_token" password="True" attrs="{'required':[ ('provider', '=', 'paynamics')]}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

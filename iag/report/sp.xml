@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <template id="inherit_delivery_slip" inherit_id="stock.report_delivery_document">
+
+      <xpath expr="//table[3]" position="after">
+        <p style="padding: 10em 0 5em 0;"></p>
+        <div class="row" t-if="o.picking_type_code == 'outgoing'">
+            <div class="col-xs-4 pull-left">
+                <div>
+                  <strong>Note</strong>
+                </div>
+                <div style="padding-bottom: 10%">
+                  <span t-field="o.note"/>
+                </div>
+                <div>
+                  <table class="table table-condensed">
+                    <thead>
+                      <tr>
+                          <th style="width: 30%;"><strong>Prepared By:</strong></th>
+                          <th style="width: 30%;"><strong>Received By:</strong></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <tr>
+                          <td style="padding-top: 8%"> </td>
+                          <td style="padding-top: 8%"> </td>
+                        </tr>
+                        <tr>
+                          <td> <span t-field="o.prepared_by"/> </td>
+                          <td> <span t-field="o.received_by"/> </td>
+                        </tr>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+        <table class="col-xs-4 pull-left" t-if="o.picking_type_code == 'incoming'">
+          <thead>
+            <tr>
+                <th style="width: 30%;"><strong>Received By: </strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <tr>
+                  <td style="padding-top: 10%"> </td>
+              </tr>
+              <tr>
+                  <td> <span t-field="o.received_by"/> </td>
+              </tr>
+            </tr>
+          </tbody>
+        </table>
+	    </xpath>
+
+    </template>
+
+  </data>
+</odoo>

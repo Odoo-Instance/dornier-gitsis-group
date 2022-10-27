@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+		<record id="payment_acquirer_paynamics" model="payment.acquirer">
+			<field name="name">Paynamics</field>
+			<field name="sequence">1</field>
+			<field name="provider">paynamics</field>
+			<field name="view_template_id" ref="paynamics_form"/>
+			<field name="image_128" type="base64" file="payment_paynamics/static/src/img/paynamics_icon.png"/>
+			<field name="module_id" ref="base.module_payment_paynamics" />
+			<field name="description" type="html">
+				<p>
+					Paynamics is the Philippines most trusted and accessible payments provider. Used by top companies in the Philippines.
+				</p>
+				<ul class="list-inline">
+					<li class="list-inline-item">
+						<i class="fa fa-check" />
+						Online Payment
+					</li>
+					<li class="list-inline-item">
+						<i class="fa fa-check" />
+						Payment Status Tracking
+					</li>
+				</ul>
+			</field>
+			<field name="payment_icon_ids"
+				eval='[(6, 0, [ref("payment.payment_icon_cc_mastercard"),
+							   ref("payment.payment_icon_cc_visa")])]' />
+		</record>
+
+    </data>
+</odoo>

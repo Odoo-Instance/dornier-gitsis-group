@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="inherit_sale_coupon_program_view_form_common" model="ir.ui.view">
+        <field name="name">sale.coupon.program.form.inherit</field>
+        <field name="model">sale.coupon.program</field>
+        <field name="inherit_id" ref="sale_coupon.sale_coupon_program_view_form_common"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='discount_specific_product_id']" position="after">
+                <field name="discount_specific_product_category_id" attrs="{'invisible': ['|', '|', ('discount_apply_on', '!=', 'specific_category'),('discount_type', '!=', 'percentage'), ('reward_type', 'in', ('product', 'free_shipping'))], 'required': [('reward_type', '=', 'discount'),('discount_apply_on', '=', 'specific_product'),('discount_type', '=', 'percentage')]}" placeholder="Select product"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

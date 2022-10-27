@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <template id="purchase_order_inherit_view" inherit_id="purchase.report_purchaseorder_document">
+
+      <xpath expr="//div[@class='row'][2]" position="after">
+        <p style="padding: 10em 0 5em 0;"></p>
+        <table class="col-xs-4 pull-left">
+          <thead>
+            <tr>
+                <th style="width: 30%;"><strong>Prepared By: </strong></th>
+                <th style="width: 30%;"><strong>Approved By: </strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <tr>
+                <td style="padding-top: 10%"> </td>
+                <td style="padding-top: 10%"> </td>
+              </tr>
+              <tr>
+                <td> <span t-field="o.prepared_by"/> </td>
+                <td> <span t-field="o.approved_by"/> </td>
+              </tr>
+            </tr>
+          </tbody>
+        </table>
+	    </xpath>
+    </template>
+
+  </data>
+</odoo>

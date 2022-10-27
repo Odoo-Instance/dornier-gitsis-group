@@ -1,0 +1,9 @@
+.idea
+*.pyc
+.vscode
+.history
+*.*~
+\#*\#
+.\#*
+.mypy_cache
+

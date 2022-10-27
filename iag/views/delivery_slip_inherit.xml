@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+      <!-- Inherit Form view -->
+      <record id="StockPickingInherit_view_form" model="ir.ui.view">
+        <field name="name">StockPickingInherit.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+          <field name="note" position="after">
+            <group>
+              <label for="prepared_by"/>
+              <div>
+                <field name="prepared_by" class="oe_inline"/>
+              </div>
+              <label for="received_by"/>
+              <div>
+                <field name="received_by" class="oe_inline"/>
+              </div>
+              <field name="picking_type_id_code_related" invisible="1"/>
+            </group>
+          </field>
+        </field>
+      </record>
+
+      <record id="purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+          <field name="picking_type_id" position="after">
+            <field name="prepared_by" attrs="{'readonly': [('state', 'in', 'done')]}"/>
+            <field name="approved_by" attrs="{'readonly': [('state', 'in', 'done')]}"/>
+          </field>
+        </field>
+      </record>
+
+    </data>
+</odoo>
