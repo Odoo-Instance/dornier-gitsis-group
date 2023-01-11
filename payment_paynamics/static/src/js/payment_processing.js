@@ -1,24 +1,36 @@
-odoo.define('payment_paynamics.processing', function (require) {
-'use strict';
+odoo.define('payment_paynamics.payment_form', require => {
+    'use strict';
 
-var ajax = require('web.ajax');
-var rpc = require('web.rpc')
- var core = require('web.core');
-var publicWidget = require('web.public.widget');
+    const checkoutForm = require('payment.checkout_form');
+    const manageForm = require('payment.manage_form');
 
- var _t = core._t;
+    const payment_paynamicsPaymentMixin = {
 
-var PaymentProcessing = publicWidget.registry.PaymentProcessing;
+        //--------------------------------------------------------------------------
+        // Private
+        //--------------------------------------------------------------------------
 
-return PaymentProcessing.include({
-
-		displayLoading: function () {
-            var msg = _t("Don't close the tab. We are processing your payment, please wait ...");
-            $.blockUI({
-                'message': '<h2 class="text-white"><img src="/web/static/src/img/spin.png" class="fa-pulse"/>' +
-                    '    <br />' + msg +
-                    '</h2>'
-            });
+        /**
+         * Add `paynamics_method` to the transaction route params if it is provided.
+         *
+         * @override method from payment.payment_form_mixin
+         * @private
+         * @param {string} provider - The provider of the selected payment option's acquirer
+         * @param {number} paymentOptionId - The id of the selected payment option
+         * @param {string} flow - The online payment flow of the selected payment option
+         * @return {object} The extended transaction route params
+         */
+        _prepareTransactionRouteParams: function (provider, paymentOptionId, flow) {
+            const transactionRouteParams = this._super(...arguments);
+            return {
+                ...transactionRouteParams,
+                'paynamics_method': provider,
+            };
         },
-});
+
+    };
+
+    checkoutForm.include(payment_paynamicsPaymentMixin);
+    manageForm.include(payment_paynamicsPaymentMixin);
+
 });

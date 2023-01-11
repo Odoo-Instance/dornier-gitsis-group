@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="0">
-        <template id="paynamics_form">
-            <div>
-            <input type="hidden" name="data_set" t-att-data-action-url="tx_url" data-remove-me=""/>
-            <input type="hidden" name="paymentrequest" t-att-value="payment_values"/>         
-            </div>
-        </template>
-         <template id="assets_frontend" inherit_id="web.assets_frontend">
-            <xpath expr="script[last()]" position="after">
-                <script type="text/javascript" src="/payment_paynamics/static/src/js/payment_processing.js"></script>
-
-            </xpath>
-        </template>
-    </data>
+    
+    <template id="paynamics_redirect_form">
+        <!-- paynamics generates a unique URL for each payment request -->
+        <form t-att-action="api_url" method="get">
+            <t t-foreach="url_params" t-as="param">
+                <input type="hidden" t-att-name="param" t-att-value="url_params[param]" />
+            </t>
+        </form>
+    </template>
 </odoo>

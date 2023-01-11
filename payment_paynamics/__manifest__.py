@@ -2,22 +2,29 @@
 
 {
     'name': 'Paynamics Payment Acquirer',
-    'category': 'Accounting/Payment',
-    'summary': 'Payment Acquirer: Paynamics Implementation',
-    'author': 'Srikesh Infotech',
-    'license': "OPL-1",
-    'website': 'http://www.srikeshinfotech.com',
     'version': '1.0',
+    'category': 'Accounting/Payment Acquirers',
+    'sequence': 356,
+    'summary': 'Payment Acquirer: Paynamics Implementation',
     'description': """Paynamics Payment Acquirer""",
+
+    'author': 'AWB',
+    'website': '',
+
     'depends': ['payment'],
-    'images': ['images/main_screenshot.png'],
-    'price': 200,
-    'currency': 'USD',
     'data': [
-        'views/payment_views.xml',
         'views/payment_paynamics_templates.xml',
+        'views/payment_views.xml',
+        'views/payment_templates.xml',
         'data/payment_acquirer_data.xml',
     ],
-    'installable': True,
-    'post_init_hook': 'create_missing_journal_for_acquirers',
+    'assets': {
+        'web.assets_frontend': [
+            'payment_paynamics/static/src/js/payment_processing.js',
+        ],
+    },
+    
+    
+    'application': True,
+    'license': 'LGPL-3'
 }

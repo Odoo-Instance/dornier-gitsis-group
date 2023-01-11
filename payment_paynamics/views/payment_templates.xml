@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Include sale-related values in payment checkout form to pass them to the client -->
+    <template id="payment_checkout_inherit" inherit_id="payment.checkout">
+        <xpath expr="//form[@name='o_payment_checkout']/div[hasclass('card')]/t[1]" position="attributes">
+            <attribute name="t-if">acquirer.provider != 'paynamics'</attribute>
+        </xpath>
+        
+        
+        <xpath expr="//form[@name='o_payment_checkout']/div[hasclass('card')]" position="inside">
+        
+                        <!-- === Acquirers === -->
+                <t t-foreach="acquirers.filtered(lambda rec:rec.provider == 'paynamics')" t-as="acquirer">
+                
+                	<!-- ===Cash only === -->
+                	<t t-if="acquirer.paynamics_cash"> 
+	                    <div name="o_payment_option_card" class="card-body o_payment_option_card">
+	                        <label>
+	                            <!-- === Radio button === -->
+	                            <!-- Only shown if linked to the only payment option -->
+	                            <input name="o_payment_radio"
+	                                   type="radio"
+	                                   t-att-checked="acquirer.id == default_payment_option_id"
+	                                   t-att-class="'' if acquirer_count + token_count > 1 else 'd-none'"
+	                                   t-att-data-payment-option-id="acquirer.id"
+	                                   data-provider="paynamics_cash"
+	                                   data-payment-option-type="acquirer"/>
+	                            <!-- === Acquirer name === -->
+	                            <span class="payment_option_name">
+	                                <b><t t-esc="acquirer.display_as or acquirer.name"/> Cash</b>
+	                            </span>
+	                            <!-- === "Test Mode" badge === -->
+	                            <span t-if="acquirer.state == 'test'"
+	                                  class="badge-pill badge-warning"
+	                                  style="margin-left:5px">
+	                                Test Mode
+	                            </span>
+	                        </label>
+	                        <!-- === Payment icon list === -->
+	                        <t t-call="payment.icon_list"/>
+	                        <!-- === Help message === -->
+	                        <div t-if="not is_html_empty(acquirer.pre_msg)"
+	                             t-out="acquirer.pre_msg"
+	                             class="text-muted ml-3"/>
+	                    </div>
+	                    <!-- === Acquirer inline form === -->
+	                    <t t-if="acquirer.sudo()._should_build_inline_form(is_validation=True)">
+	                        <div t-attf-id="o_payment_acquirer_inline_form_{{acquirer.id}}"
+	                             name="o_payment_inline_form"
+	                             class="card-footer d-none">
+	                            <!-- === Inline form content (filled by acquirer) === -->
+	                            <t t-set="inline_form_xml_id"
+	                               t-value="acquirer.sudo().inline_form_view_id.xml_id"/>
+	                            <div t-if="inline_form_xml_id" class="clearfix">
+	                                <t t-call="{{inline_form_xml_id}}">
+	                                    <t t-set="acquirer_id" t-value="acquirer.id"/>
+	                                </t>
+	                            </div>
+	                        </div>
+	                    </t>
+                    
+                    </t>
+                    
+                    
+                    <!-- ===Credit cards only === -->
+                	<t t-if="acquirer.paynamics_creditcard"> 
+	                    <div name="o_payment_option_card" class="card-body o_payment_option_card">
+	                        <label>
+	                            <!-- === Radio button === -->
+	                            <!-- Only shown if linked to the only payment option -->
+	                            <input name="o_payment_radio"
+	                                   type="radio"
+	                                   t-att-checked="acquirer.id == default_payment_option_id"
+	                                   t-att-class="'' if acquirer_count + token_count > 1 else 'd-none'"
+	                                   t-att-data-payment-option-id="acquirer.id"
+	                                   data-provider="paynamics_creditcard"
+	                                   data-payment-option-type="acquirer"/>
+	                            <!-- === Acquirer name === -->
+	                            <span class="payment_option_name">
+	                                <b><t t-esc="acquirer.display_as or acquirer.name"/> Credit Cards</b>
+	                            </span>
+	                            <!-- === "Test Mode" badge === -->
+	                            <span t-if="acquirer.state == 'test'"
+	                                  class="badge-pill badge-warning"
+	                                  style="margin-left:5px">
+	                                Test Mode
+	                            </span>
+	                        </label>
+	                        <!-- === Payment icon list === -->
+	                        <t t-call="payment.icon_list"/>
+	                        <!-- === Help message === -->
+	                        <div t-if="not is_html_empty(acquirer.pre_msg)"
+	                             t-out="acquirer.pre_msg"
+	                             class="text-muted ml-3"/>
+	                    </div>
+	                    <!-- === Acquirer inline form === -->
+	                    <t t-if="acquirer.sudo()._should_build_inline_form(is_validation=True)">
+	                        <div t-attf-id="o_payment_acquirer_inline_form_{{acquirer.id}}"
+	                             name="o_payment_inline_form"
+	                             class="card-footer d-none">
+	                            <!-- === Inline form content (filled by acquirer) === -->
+	                            <t t-set="inline_form_xml_id"
+	                               t-value="acquirer.sudo().inline_form_view_id.xml_id"/>
+	                            <div t-if="inline_form_xml_id" class="clearfix">
+	                                <t t-call="{{inline_form_xml_id}}">
+	                                    <t t-set="acquirer_id" t-value="acquirer.id"/>
+	                                </t>
+	                            </div>
+	                        </div>
+	                    </t>
+                    
+                    </t>
+                    <!-- ===Paynamics All Channel === -->
+                	<t t-if="acquirer.paynamics_allchannel"> 
+	                    <div name="o_payment_option_card" class="card-body o_payment_option_card">
+	                        <label>
+	                            <!-- === Radio button === -->
+	                            <!-- Only shown if linked to the only payment option -->
+	                            <input name="o_payment_radio"
+	                                   type="radio"
+	                                   t-att-checked="acquirer.id == default_payment_option_id"
+	                                   t-att-class="'' if acquirer_count + token_count > 1 else 'd-none'"
+	                                   t-att-data-payment-option-id="acquirer.id"
+	                                   data-provider="paynamics_allchannel"
+	                                   data-payment-option-type="acquirer"/>
+	                            <!-- === Acquirer name === -->
+	                            <span class="payment_option_name">
+	                                <b><t t-esc="acquirer.display_as or acquirer.name"/></b>
+	                            </span>
+	                            <!-- === "Test Mode" badge === -->
+	                            <span t-if="acquirer.state == 'test'"
+	                                  class="badge-pill badge-warning"
+	                                  style="margin-left:5px">
+	                                Test Mode
+	                            </span>
+	                        </label>
+	                        <!-- === Payment icon list === -->
+	                        <t t-call="payment.icon_list"/>
+	                        <!-- === Help message === -->
+	                        <div t-if="not is_html_empty(acquirer.pre_msg)"
+	                             t-out="acquirer.pre_msg"
+	                             class="text-muted ml-3"/>
+	                    </div>
+	                    <!-- === Acquirer inline form === -->
+	                    <t t-if="acquirer.sudo()._should_build_inline_form(is_validation=True)">
+	                        <div t-attf-id="o_payment_acquirer_inline_form_{{acquirer.id}}"
+	                             name="o_payment_inline_form"
+	                             class="card-footer d-none">
+	                            <!-- === Inline form content (filled by acquirer) === -->
+	                            <t t-set="inline_form_xml_id"
+	                               t-value="acquirer.sudo().inline_form_view_id.xml_id"/>
+	                            <div t-if="inline_form_xml_id" class="clearfix">
+	                                <t t-call="{{inline_form_xml_id}}">
+	                                    <t t-set="acquirer_id" t-value="acquirer.id"/>
+	                                </t>
+	                            </div>
+	                        </div>
+	                    </t>
+                    
+                    </t>
+            </t>
+        
+        </xpath>
+        
+        
+    </template>
+
+</odoo>
