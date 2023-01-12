@@ -10,7 +10,7 @@ from odoo import _, models, api, fields
 from odoo.exceptions import ValidationError
 
 from odoo.addons.payment_paynamics.controllers.main import PaynamicsController
-
+from odoo.http import request
 import json
 import base64
 import hashlib
@@ -216,17 +216,16 @@ class PaymentTransaction(models.Model):
 
     @api.model
     def _get_tx_from_feedback_data(self, provider, post):
-        tx = super()._get_tx_from_feedback_data(provider, data)
+        tx = super()._get_tx_from_feedback_data(provider, post)
         if provider != 'paynamics':
             return tx
 
         reference = post.get('request_id')
-        txn_id = data.get('trade_no')
-        if not reference or not txn_id:
+        if not reference:
             raise ValidationError(
                 "paynamics: " + _(
-                    "Received data with missing reference %(r)s or txn_id %(t)s.",
-                    r=reference, t=txn_id
+                    "Received data with missing reference %(r)s.",
+                    r=reference
                 )
             )
 
@@ -240,7 +239,7 @@ class PaymentTransaction(models.Model):
 
 
     def _process_feedback_data(self, post):
-        super()._process_feedback_data(data)
+        super()._process_feedback_data(post)
         if self.provider != 'paynamics':
             return
         
@@ -267,12 +266,16 @@ class PaymentTransaction(models.Model):
             _logger.warning('Paynamics: CANCELLED')
             if tx:
                 self.sudo().update({'state':'cancel','state_message':'Paynamics: Transaction cancelled by user'})
+        elif post.get('response_code') in ['GR033']:
+            _logger.warning('Paynamics: pending')
+            if tx:
+                self.sudo().update({'state':'pending','state_message':'Paynamics: Transaction is pending.'})
                 #tx.sudo()._set_transaction_cancel()
         else:
             _logger.warning('Paynamics: unrecognized paynamics answer, received %s \
             instead of VERIFIED/SUCCESS or INVALID/FAIL' % post.get(
                 'response_code'))
             self.sudo().update({'state': 'error','state_message': 'Unrecognized error from \
-                Paynamics. Please contact your administrator.'})
+                Paynamics. Please contact your administrator. \n '+str(post.get("response_message", ""))+' \n'+str(post.get("response_advise", ""))})
         
 
