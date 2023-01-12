@@ -19,22 +19,32 @@ class PaynamicsController(http.Controller):
     _return_url = '/shop/payment/paynamics/dpn/'
     _cancel_url = '/shop/payment/paynamics/cancel/'
 
-    @http.route('/shop/payment/paynamics/ipn/', type='http', auth='none',
+    @http.route('/shop/payment/paynamics/ipn/', type='json', auth='none',
                 methods=['POST','GET'], csrf=False)
     def paynamics_ipn_return_from_redirect(self, **post):
+        _logger.info("received Paynamics return post args:\n%s", pprint.pformat(post))
         data = json.loads(request.httprequest.data)
         """ Paynamics return """
         _logger.info("received Paynamics return data:\n%s", pprint.pformat(data))
-        request.env['payment.transaction'].sudo()._handle_feedback_data('paynamics', data)
+        try:
+            request.env['payment.transaction'].sudo()._handle_feedback_data('paynamics', data)
+        except:
+            request.env['payment.transaction'].sudo()._handle_feedback_data('paynamics', post)
+            
         return 'Success'
 
     @http.route('/shop/payment/paynamics/dpn', type='http', auth="none",
                 methods=['POST', 'GET'], csrf=False, cors="*")
     def paynamics_dpn(self, **post):
+        _logger.info("received Paynamics return post args:\n%s", pprint.pformat(post))
         data = json.loads(request.httprequest.data)
         """ paynamics Notify """
         _logger.info("received paynamics notification data:\n%s", pprint.pformat(data))
-        request.env['payment.transaction'].sudo()._handle_feedback_data('paynamics', data)
+        try:
+            request.env['payment.transaction'].sudo()._handle_feedback_data('paynamics', data)
+        except:
+            request.env['payment.transaction'].sudo()._handle_feedback_data('paynamics', post)
+            
         return request.redirect('/payment/status')
     
 
@@ -46,6 +56,6 @@ class PaynamicsController(http.Controller):
         _logger.info('Beginning Paynamics cancel with post \
             data %s', pprint.pformat(post))  # debug
         # request.env['payment.transaction'].sudo()._handle_feedback_data('paynamics', data)
-        return werkzeug.utils.redirect('/payment/status')
+        return werkzeug.utils.redirect('/shop/confirmation')
 
 
