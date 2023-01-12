@@ -19,8 +19,8 @@ class PaynamicsController(http.Controller):
     _return_url = '/shop/payment/paynamics/dpn/'
     _cancel_url = '/shop/payment/paynamics/cancel/'
 
-    @http.route('/shop/payment/paynamics/ipn/', type='json', auth='none',
-                methods=['POST'], csrf=False)
+    @http.route('/shop/payment/paynamics/ipn/', type='http', auth='none',
+                methods=['POST','GET'], csrf=False)
     def paynamics_ipn_return_from_redirect(self, **post):
         data = json.loads(request.httprequest.data)
         """ Paynamics return """
@@ -28,7 +28,7 @@ class PaynamicsController(http.Controller):
         request.env['payment.transaction'].sudo()._handle_feedback_data('paynamics', data)
         return 'Success'
 
-    @http.route('/shop/payment/paynamics/dpn', type='json', auth="none",
+    @http.route('/shop/payment/paynamics/dpn', type='http', auth="none",
                 methods=['POST', 'GET'], csrf=False, cors="*")
     def paynamics_dpn(self, **post):
         data = json.loads(request.httprequest.data)
@@ -36,6 +36,7 @@ class PaynamicsController(http.Controller):
         _logger.info("received paynamics notification data:\n%s", pprint.pformat(data))
         request.env['payment.transaction'].sudo()._handle_feedback_data('paynamics', data)
         return request.redirect('/payment/status')
+    
 
     @http.route('/shop/payment/paynamics/cancel', type='http', auth="none",
                 csrf=False)
