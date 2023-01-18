@@ -17,9 +17,10 @@
                 </xpath>
                 
                 <xpath expr='//group[@name="availability"]' position='inside'>
+                	<field name="paynamics_online" attrs="{'invisible': [('provider', '!=', 'paynamics')]}"/>
+                	<field name="paynamics_allchannel" attrs="{'invisible': [('provider', '!=', 'paynamics')]}"/>
                 	<field name="paynamics_cash" attrs="{'invisible': [('provider', '!=', 'paynamics')]}"/>
                 	<field name="paynamics_creditcard" attrs="{'invisible': [('provider', '!=', 'paynamics')]}"/>
-                	<field name="paynamics_allchannel" attrs="{'invisible': [('provider', '!=', 'paynamics')]}"/>
                 </xpath>
             </field>
         </record>

@@ -29,8 +29,8 @@ class ResConfigSettings(models.TransientModel):
                     values = {}
                     workbook = xlrd.open_workbook(file.name)
                     sheet = workbook.sheet_by_index(1)
-                except Exception:
-                    raise ValidationError(_("Please Select Valid File Format !"))
+                except Exception as e:
+                    raise ValidationError(_("Please Select Valid File Format !, Error : "+str(e)))
     
                 for row_no in range(sheet.nrows):
                     val = {}
@@ -186,15 +186,18 @@ class ResConfigSettings(models.TransientModel):
                 else:
                     line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
                     wh_id = self.env['stock.warehouse'].search([('code','=',line[2]),'|', ('active','=',True), ('active','=',False)])
+                    partner_id = False
+                    if line[3]:
+                        partner_id = int(float(line[3]))
                     val.update( {
                         'name':line[1],
-                        'partner_id': int(float(line[3])),
+                        'partner_id': partner_id,
                         'company_id': int(float(line[4] or self.env.company.id)),
                         })
                     if not wh_id:
                         val.update({'code': line[2]})
                         res = self.env['stock.warehouse'].create(val)
-                    else:
+                    elif line[5] == "Yes":
                         val.update({'active': True})
                         wh_id.write(val)
                         
@@ -352,6 +355,7 @@ class ResConfigSettings(models.TransientModel):
                             try:
                                 res.write({'factor':ratio})
                             except Exception as e:
+                                _logger.info(str(e))
                                 pass
                     elif line[3] == 'Yes':
                         if not line[4]:
@@ -363,6 +367,7 @@ class ResConfigSettings(models.TransientModel):
                             try:
                                 res.write({'factor':ratio})
                             except Exception as e:
+                                _logger.info(str(e))
                                 pass
 
 
@@ -437,8 +442,8 @@ class ResConfigSettings(models.TransientModel):
                         uom_id = self.env['uom.uom'].search([('id','=',int(float(line[7] or 0)))], limit=1)
                     if not uom_id and line[6]:
                         uom_id = self.env['uom.uom'].search([('name','=', line[6])], limit=1)
-                    if line[8] == "All / Saleable / Filters":
-                        pass
+                    # if line[8] == "All / Saleable / Filters":
+                    #     pass
                     categ_id = False
                     if line[9]:
                         categ_id = self.env['product.category'].search([('id','=',int(float(line[9] or 0)))], limit=1)
@@ -550,7 +555,7 @@ class ResConfigSettings(models.TransientModel):
                             'product_code': line[25],
                             'price': line[29],
                             'min_qty': line[26] or 1,
-                            'delay':int(float(line[30])),
+                            'delay':int(float(line[30] or 0)),
                             'product_uom':vendor_uom_id and vendor_uom_id.id or 1,
                             'product_tmpl_id':product_id.id,
                             })

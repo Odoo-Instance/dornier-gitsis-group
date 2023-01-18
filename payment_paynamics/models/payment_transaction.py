@@ -79,9 +79,11 @@ class PaymentTransaction(models.Model):
         paynamics_method = ""
         
         if self.paynamics_method == "paynamics_cash":
-            paynamics_method = "gc"
+            paynamics_method = "gc,pp,pwn,wechat,alipay,coins_ph,paymaya_ph,atome_ph,grabpay_ph,shopeepay_ph"
         elif self.paynamics_method == "paynamics_creditcard":
-            paynamics_method = "gpap_cc_ph"
+            paynamics_method = "gpap_cc_ph,bdo_cc_ph,metrobank_cc_ph,maybank_cc_ph,paymaya_cc_ph,paytabs_cc_ph,wdbank_de,emp_bg,pc21_cy,sberbank_ru,integra_au,icard_bg,ubp_ph,rob_ph"
+        elif self.paynamics_method == "paynamics_online":
+            paynamics_method = "ubp_online,bn,bpi_ph,ubponline_ph,pnbonline_ph,instapay_qr_ph,br_bdo_ph,br_rcbc_ph,br_pnb_ph,br_bdo_ph_online,bdo_online"
         elif self.paynamics_method == "paynamics_allchannel":
             paynamics_method = ""
         
@@ -256,11 +258,12 @@ class PaymentTransaction(models.Model):
 
         if post.get('response_code') in ['GR001','GR002']:
             _logger.info('Paynamics: validated data')
-            self._set_done()
+            self.sudo()._set_done()
+            self.sudo().update({'acquirer_reference': str(post.get("pay_reference",post.get("processor_response_id",""))),'state_message': ' Success \n '+str(post)})
         elif post.get('response_code') in ['GR036']:
             _logger.warning(
                 'Paynamics: Signature Verification failed')
-            self.update({'state': 'error','state_message': 'Signature Verification failed. Please contact your \
+            self.sudo().update({'state': 'error','state_message': 'Signature Verification failed. Please contact your \
                     administrator.'})
         elif post.get('response_code') in ['GR028','GR053']:
             _logger.warning('Paynamics: CANCELLED')
