@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+
+	    <!-- Expandable payment icon list -->
+    <template id="icon_list" name="Payment Icon List">
+        <ul class="payment_icon_list float-right list-inline" data-max-icons="3">
+            <t t-set="icon_index" t-value="0"/>
+            <t t-set="MAX_ICONS" t-value="3"/>
+            <!-- === Icons === -->
+            <!-- Only shown if in the first 3 icons -->
+            <t t-foreach="payment_icon_ids" t-as="icon">
+                <li t-attf-class="list-inline-item{{'' if (icon_index &lt; MAX_ICONS) else ' d-none'}}">
+                    <span t-esc="icon.image_payment_form"
+                          t-options="{'widget': 'image', 'alt-field': 'name'}"
+                          data-toggle="tooltip"
+                          t-att-title="icon.name"/>
+                </li>
+                <t t-set="icon_index" t-value="icon_index + 1"/>
+            </t>
+            <t t-if="icon_index >= MAX_ICONS">
+                <!-- === "show more" button === -->
+                <!-- Only displayed if too many payment icons -->
+                <li style="display:block;" class="list-inline-item">
+                    <span class="float-right more_option text-info">
+                        <a name="o_payment_icon_more"
+                           data-toggle="tooltip"
+                           t-att-title="', '.join([icon.name for icon in payment_icon_ids[MAX_ICONS:]])">
+                            show more
+                        </a>
+                    </span>
+                </li>
+                <!-- === "show less" button === -->
+                <!-- Only displayed when "show more" is clicked -->
+                <li style="display:block;" class="list-inline-item d-none">
+                    <span class="float-right more_option text-info">
+                        <a name="o_payment_icon_less">show less</a>
+                    </span>
+                </li>
+            </t>
+        </ul>
+    </template>
+
     <!-- Include sale-related values in payment checkout form to pass them to the client -->
     <template id="payment_checkout_inherit" inherit_id="payment.checkout">
         <xpath expr="//form[@name='o_payment_checkout']/div[hasclass('card')]/t[1]" position="attributes">
@@ -13,8 +53,12 @@
                         <!-- === Acquirers === -->
                 <t t-foreach="acquirers.filtered(lambda rec:rec.provider == 'paynamics')" t-as="acquirer">
                 
+                <t t-set="payment_icon_ids" t-value="[]"/>
+                
                 <!-- ===Paynamics All Channel === -->
                 	<t t-if="acquirer.paynamics_allchannel"> 
+                	<t t-set="payment_icon_ids" t-value="acquirer.payment_icon_ids.filtered(lambda r: r.image_payment_form and r.paynamics_allchannel)"/>
+                	
 	                    <div name="o_payment_option_card" class="card-body o_payment_option_card">
 	                        <label>
 	                            <!-- === Radio button === -->
@@ -38,7 +82,7 @@
 	                            </span>
 	                        </label>
 	                        <!-- === Payment icon list === -->
-	                        <t t-call="payment.icon_list"/>
+	                        <t t-call="payment_paynamics.icon_list"/>
 	                        <!-- === Help message === -->
 	                        <div t-if="not is_html_empty(acquirer.pre_msg)"
 	                             t-out="acquirer.pre_msg"
@@ -64,6 +108,8 @@
                 
                 	<!-- ===Cash only === -->
                 	<t t-if="acquirer.paynamics_cash"> 
+                		<t t-set="payment_icon_ids" t-value="acquirer.payment_icon_ids.filtered(lambda r: r.image_payment_form and r.paynamics_cash)"/>
+                	
 	                    <div name="o_payment_option_card" class="card-body o_payment_option_card">
 	                        <label>
 	                            <!-- === Radio button === -->
@@ -77,7 +123,7 @@
 	                                   data-payment-option-type="acquirer"/>
 	                            <!-- === Acquirer name === -->
 	                            <span class="payment_option_name">
-	                                <b><t t-esc="acquirer.display_as or acquirer.name"/> Cash</b>
+	                                <b><t t-esc="acquirer.display_as or acquirer.name"/> Wallet</b>
 	                            </span>
 	                            <!-- === "Test Mode" badge === -->
 	                            <span t-if="acquirer.state == 'test'"
@@ -87,7 +133,7 @@
 	                            </span>
 	                        </label>
 	                        <!-- === Payment icon list === -->
-	                        <t t-call="payment.icon_list"/>
+	                        <t t-call="payment_paynamics.icon_list"/>
 	                        <!-- === Help message === -->
 	                        <div t-if="not is_html_empty(acquirer.pre_msg)"
 	                             t-out="acquirer.pre_msg"
@@ -114,6 +160,8 @@
                     
                     <!-- ===Credit cards only === -->
                 	<t t-if="acquirer.paynamics_creditcard"> 
+                		<t t-set="payment_icon_ids" t-value="acquirer.payment_icon_ids.filtered(lambda r: r.image_payment_form and r.paynamics_creditcard)"/>
+                		
 	                    <div name="o_payment_option_card" class="card-body o_payment_option_card">
 	                        <label>
 	                            <!-- === Radio button === -->
@@ -137,7 +185,7 @@
 	                            </span>
 	                        </label>
 	                        <!-- === Payment icon list === -->
-	                        <t t-call="payment.icon_list"/>
+	                        <t t-call="payment_paynamics.icon_list"/>
 	                        <!-- === Help message === -->
 	                        <div t-if="not is_html_empty(acquirer.pre_msg)"
 	                             t-out="acquirer.pre_msg"
@@ -165,6 +213,7 @@
                     
                     <!-- ===Online Transfer only === -->
                 	<t t-if="acquirer.paynamics_online"> 
+                		<t t-set="payment_icon_ids" t-value="acquirer.payment_icon_ids.filtered(lambda r: r.image_payment_form and r.paynamics_online)"/>
 	                    <div name="o_payment_option_card" class="card-body o_payment_option_card">
 	                        <label>
 	                            <!-- === Radio button === -->
@@ -188,7 +237,7 @@
 	                            </span>
 	                        </label>
 	                        <!-- === Payment icon list === -->
-	                        <t t-call="payment.icon_list"/>
+	                        <t t-call="payment_paynamics.icon_list"/>
 	                        <!-- === Help message === -->
 	                        <div t-if="not is_html_empty(acquirer.pre_msg)"
 	                             t-out="acquirer.pre_msg"

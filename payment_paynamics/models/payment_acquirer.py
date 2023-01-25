@@ -36,7 +36,7 @@ class PaymentAcquirer(models.Model):
         Transfer allows you to receive notification of successful payments as \
         they are made.', groups='base.group_user')
     
-    paynamics_cash = fields.Boolean(string="Cash", default=True)
+    paynamics_cash = fields.Boolean(string="Wallet", default=True)
     paynamics_creditcard = fields.Boolean(string="Credit Card", default=True)
     paynamics_allchannel = fields.Boolean(string="All Payment Channel", default=False)
     paynamics_online = fields.Boolean(string="Online Payment", default=False)

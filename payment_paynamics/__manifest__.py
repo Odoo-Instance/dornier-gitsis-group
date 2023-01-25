@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': 'Paynamics Payment Acquirer',
+    'name': 'Paynamics Payment Acquirer odoo15',
     'version': '1.0',
     'category': 'Accounting/Payment Acquirers',
     'sequence': 356,

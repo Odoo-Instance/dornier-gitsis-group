@@ -24,5 +24,24 @@
                 </xpath>
             </field>
         </record>
+        
+        <record id="payment_icon_form_paynamics" model="ir.ui.view">
+            <field name="name">payment.icon.paynamics</field>
+            <field name="model">payment.icon</field>
+            <field name="inherit_id" ref="payment.payment_icon_form"/>
+            <field name="arch" type="xml">
+                <xpath expr='//notebook/page[@name="acquirers"]' position='after'>
+                     <page string="Paynamics Configuration" name="paynamics_config">
+                         <group>
+                         	<field name="paynamics_allchannel" />
+	                        <field name="paynamics_online" />
+		                	<field name="paynamics_cash" />
+		                	<field name="paynamics_creditcard" />
+	                    </group>
+                    </page>
+                </xpath>
+                
+            </field>
+        </record>
     </data>
 </odoo>
