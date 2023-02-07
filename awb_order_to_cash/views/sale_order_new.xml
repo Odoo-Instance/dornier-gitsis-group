@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!--Adding group by in sale order and quotation-->
+	<record id="sale_order_view_search_inherit_quotation" model="ir.ui.view">
+		<field name="name">sale.order.search.inherit.quotation</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="sale.view_sales_order_filter" />
+		<field name="arch" type="xml">
+			<xpath expr="//filter[@name='my_sale_orders_filter']" position="before">
+				<field name="awb_product_ids"/>
+				<field name="team_id"/>
+			</xpath>
+			<xpath expr="//group" position="inside">
+				<filter string="Product" name="awb_product_ids"  context="{'group_by':'awb_product_ids'}" />
+				<filter string="Sales Channels/Team" name="sales_channel" context="{'group_by':'team_id'}"/>
+				<filter string="Promotion Programs" name="promotion_program" context="{'group_by':'no_code_promo_program_ids'}"/>
+			</xpath>
+		</field>
+	</record>
+	<!--added awb product id field for group by method based on product-->
+	<record id="sale_order_view_form_awb" model="ir.ui.view">
+        <field name="name">sale.order.view.awb</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position="after" >
+                <field name="awb_product_ids" string ="Product many" invisible="1" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!--added field and warning message in sale order-->
+    <record id="view_order_form_inherit_awb" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <field name="credit_limit_type" invisible="1"/>
+                <field name="show_partner_credit_warning" invisible="1"/>
+                <div class="alert alert-warning mb-0" role="alert"
+                     attrs="{'invisible': ['|', '|', ('state', 'not in', ['draft', 'sent']),
+                     ('show_partner_credit_warning', '=', False), ('credit_limit_type', '!=', 'warning')]}">
+                    This customer has reached his Credit Limit of : <b><field name="partner_credit_limit"/></b>.<br/>
+                    Total amount due : <b><field name="partner_credit"/></b>.
+                </div>
+                <div class="alert alert-danger mb-0" role="alert"
+                     attrs="{'invisible': ['|', '|', ('state', 'not in', ['draft', 'sent']),
+                     ('show_partner_credit_warning', '=', False), ('credit_limit_type', '!=', 'block')]}">
+                    This customer has reached his Credit Limit of : <b><field name="partner_credit_limit"/></b>.<br/>
+                    Total amount due : <b><field name="partner_credit"/></b>.
+                </div>
+            </xpath>
+        </field>
+    </record>
+    
+</odoo>
