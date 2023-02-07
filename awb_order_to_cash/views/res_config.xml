@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ <!-- Res.config setting Form Inherit , added some more button and fields-->
+   <record id="res_config_settings_view_form_stock_inherit" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.automation.stock</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@data-key='sale_management']/h2[1]" position="before">
+               <h2>Order to Cash Automation</h2>
+                        <div class="row mt16 o_settings_container" name="order_auto_setting">
+                            <div class="col-12 col-lg-6 o_setting_box" id="process_stock_auto">
+                                <label for="awb_automation_sale_file_type" string="File Type" class="col-lg-4 o_form_label"/>
+                    			<field name="awb_automation_sale_file_type" class="oe_inline" />
+                            </div>
+                            <div class="col-12 col-lg-6 o_setting_box" id="process_order_auto">
+                                <label for="awb_automation_sale_file" string="Upload File" class="col-lg-4 o_form_label"/>
+                    			<field name="awb_automation_sale_file" class="oe_inline" widget="binary" />
+                    			<button string="Import" class="btn btn-primary m-1" type="object" name="auto_import_order"/>
+                    			<div style="display: inline-flex;gap: 5px;"><div style="padding-left: 17px;"><a href="/awb_order_to_cash/static/src/sample/sample1.xlsx" class="btn btn-info"  role="button">Sample 1</a></div>
+                    			<div><a href="/awb_order_to_cash/static/src/sample/sample2.xlsx" class="btn btn-info" role="button">Sample 2</a></div>
+                    			<div><a href="/awb_order_to_cash/static/src/sample/saleDemo.xlsx" class="btn btn-info" role="button">Sample 3</a></div>
+                    			</div>
+                            </div>
+                              <div class="col-12 col-lg-6 o_setting_box" id="is_delivery_set_to_done_awb_configuration">
+								<!-- Left Side Check Box -->
+								<div class="o_setting_left_pane">
+									<field name="is_delivery_set_to_done_awb"/>
+								</div>
+								<!-- Right Side Details Section -->
+								<div class="o_setting_right_pane">
+									<label for="is_delivery_set_to_done_awb"/>
+									<div class="text-muted">
+										Automatic Delivery OTC
+									</div>	
+								</div>
+								</div>
+								<div class="col-12 col-lg-6 o_setting_box" id="create_invoice_awb_configuration">
+								<!-- Left Side Check Box -->
+								<div class="o_setting_left_pane">
+									<field name="create_invoice_awb"/>
+								</div>
+								<!-- Right Side Details Section -->
+								<div class="o_setting_right_pane">
+									<label for="create_invoice_awb"/>
+									<div class="text-muted">
+										Automatic Invoice OTC
+									</div>	
+								</div>
+								</div>
+								<div class="col-12 col-lg-6 o_setting_box" id="validate_invoice_awb_configuration">
+								<!-- Left Side Check Box -->
+								<div class="o_setting_left_pane">
+									<field name="validate_invoice_awb"/>
+								</div>
+								<!-- Right Side Details Section -->
+								<div class="o_setting_right_pane">
+									<label for="validate_invoice_awb"/>
+									<div class="text-muted">
+										Automatic Validate Invoice OTC
+									</div>	
+								</div>
+								</div>
+								<div class="col-12 col-lg-6 o_setting_box" id="confirm_sale_awb_configuration">
+								<!-- Left Side Check Box -->
+								<div class="o_setting_left_pane">
+									<field name="confirm_sale_awb"/>
+								</div>
+								<!-- Right Side Details Section -->
+								<div class="o_setting_right_pane">
+									<label for="confirm_sale_awb"/>
+									<div class="text-muted">
+										Automatic confirm sale order OTC
+									</div>
+									<button string="Confirm Order" class="btn btn-primary m-1" type="object" name="auto_confirm_sale_order"/>	
+								</div>
+								</div>
+                        </div>
+                      
+            </xpath>
+            
+        </field>
+    </record>
+    <!--added credit limit button in res.config.setting-->
+    <record id="res_config_settings_view_form_inherit" model="ir.ui.view">
+        <field name="name">res.config.settings</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='use_invoice_terms']" position="after">
+                <div class="col-xs-12 col-md-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="account_credit_limit"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="account_credit_limit"/>
+                        <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." role="img"/>
+                        <div class="text-muted">
+                            Trigger alerts when creating Invoices and Sales Orders for Partners with a Total Receivable amount exceeding a limit.
+                        </div>
+                        <div class="content-group mt-2" attrs="{'invisible': [('account_credit_limit', '=', False)]}">
+                            <div class="row">
+                                <label for="account_default_credit_limit" class="col-lg-4 o_light_label"/>
+                                <field name="account_default_credit_limit"/>
+                            </div>
+                        </div>
+                        <div class="content-group mt-2" attrs="{'invisible': [('account_credit_limit', '=', False)]}">
+                            <div class="row">
+                                <label for="credit_limit_type" class="col-lg-4 o_light_label"/>
+                                <field name="credit_limit_type" attrs="{'required': [('account_credit_limit', '=', True)]}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
