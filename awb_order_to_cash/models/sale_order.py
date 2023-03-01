@@ -114,7 +114,7 @@ class SaleOrderInherit(models.Model):
 
     def _prepare_confirmation_values(self):
         
-        if request.session['awb_sale_order']:
+        if request.session.get('awb_sale_order'):
             return {
                 'state': 'sale',
                 'date_order': self.date_order
@@ -138,7 +138,7 @@ class SaleOrderInherit(models.Model):
         create_invoice = self.env['ir.config_parameter'].sudo().search([('key','=', 'create_invoice')])
         validate_invoice = self.env['ir.config_parameter'].sudo().search([('key','=', 'validate_invoice')])
         
-        if request.session['awb_sale_order']:
+        if request.session.get('awb_sale_order'):
             for order in self:
                 if is_delivery_set_to_done and order.picking_ids: 
                     for picking in self.picking_ids:
