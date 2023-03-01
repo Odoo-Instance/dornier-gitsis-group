@@ -345,12 +345,14 @@ class ResConfigSettingsInherit(models.TransientModel):
                                                                          'product_uom_qty':float(line[11]),
                                                                          'price_unit': float(line[12]),
                                                                          'name': product.name,
-                                                                         'tax_id': [(6,0,tax_ar)] if tax_ar else False,
+                                                                         #'tax_id': [(6,0,tax_ar)] if tax_ar else False,
                                                                          'order_id': sale.id})
                             if pricelist_id:
                                 sale.pricelist_id = pricelist_id.id
                             if company:
                                 sale.company_id = company.id
+                            if tax_ar:
+                                order_line.tax_id = [(6,0,tax_ar)]
                             request.session['import_sale_order'].add(sale.id)
                             request.session['confirm_sale_order'].append(sale.id)
                             
