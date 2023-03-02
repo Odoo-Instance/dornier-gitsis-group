@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_awb_fbcatalog_user,awb.fb.catalog,model_awb_fb_catalog,base.group_user,1,1,1,1
+access_awb_fb_fields_user,awb.fb.fields,model_awb_fb_fields,base.group_user,1,1,1,1
+access_awb_field_mapping_user,awb.field.mapping,model_awb_field_mapping,base.group_user,1,1,1,1
+access_awb_field_mapping_line_user,awb.field.mapping.line,model_awb_field_mapping_line,base.group_user,1,1,1,1
+access_awb_google_category_user,awb.google.category,model_awb_google_category,base.group_user,1,1,1,1

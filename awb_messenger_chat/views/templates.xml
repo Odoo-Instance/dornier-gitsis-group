@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<!-- scripts for facebook messenger  -->
+    <template id="website_facebook_page_id" name="AWB Facebook Messenger" inherit_id="website.layout">
+        <xpath expr="//div[@id='footer']" position="inside">
+            <!-- Messenger Chat plugin Code -->
+		    <div id="fb-root"></div>
+		    <div id="fb-customer-chat" class="fb-customerchat">
+		        
+		    </div>
+		    <!-- Your Chat plugin code -->
+		    
+		
+		    <script t-if="website and website.facebook_page_id">
+		      var chatbox = document.getElementById('fb-customer-chat');
+		      chatbox.setAttribute("page_id", <t t-esc="website.facebook_page_id"/>);
+		      chatbox.setAttribute("attribution", "biz_inbox");
+<!-- 		    </script> -->
+		
+<!-- 		    Your SDK code -->
+<!-- 		    <script> -->
+		      window.fbAsyncInit = function() {
+		        FB.init({
+		          xfbml            : true,
+		          version          : 'v15.0'
+		        });
+		      };
+		
+		      (function(d, s, id) {
+		        var js, fjs = d.getElementsByTagName(s)[0];
+		        if (d.getElementById(id)) return;
+		        js = d.createElement(s); js.id = id;
+		        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+		        fjs.parentNode.insertBefore(js, fjs);
+		      }(document, 'script', 'facebook-jssdk'));
+		    </script>
+        </xpath>
+    </template>
+
+</odoo>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<odoo>
+	<!-- fb fields design -->
+	<record id="fb_fields_tree_view" model="ir.ui.view">
+		<field name="name">fb.fields.tree</field>
+		<field name="model">awb.fb.fields</field>
+		<field name="arch" type="xml">
+			<tree editable="bottom">
+                <field name="name"/>
+                <field name="required"/>
+                <field name="required_g"/>
+                <!-- <field name="sub_field" /> -->
+            </tree>
+		</field>
+	</record>
+	<!--menu action item  -->
+	<record id="action_fb_fields_menu" model="ir.actions.act_window">
+	   <field name="name">Facebook Fields</field>
+	   <field name="res_model">awb.fb.fields</field>
+	   <field name="view_mode">tree</field>
+	   <field name="view_id" ref="fb_fields_tree_view"/>
+	   <field name="help" type="html">
+	       <p class="o_view_nocontent_smiling_face">
+	           Generate Google category
+	       </p>
+	   </field>
+	</record>
+	<!--menu item  -->
+	<!--Commented menu-->
+	<!--<menuitem id="menu_facebook_fields"
+         name="Facebook fields"
+         parent="menu_setting_fb"
+         action="action_fb_fields_menu"
+         sequence="2"/>-->
+</odoo>
