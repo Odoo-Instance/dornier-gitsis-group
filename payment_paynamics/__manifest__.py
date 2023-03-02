@@ -11,7 +11,7 @@
     'author': 'AWB',
     'website': '',
 
-    'depends': ['payment'],
+    'depends': ['payment','partner_firstname'],
     'data': [
         'views/payment_paynamics_templates.xml',
         'views/payment_views.xml',

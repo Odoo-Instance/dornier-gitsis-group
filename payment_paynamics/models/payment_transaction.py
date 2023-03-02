@@ -103,8 +103,8 @@ class PaymentTransaction(models.Model):
         
         signatureTrx = hashlib.sha512(rawTrx).hexdigest()
         
-        fname = self.partner_id.name
-        lname = ""
+        fname = self.partner_id.firstname
+        lname = self.partner_id.lastname
         mname = ""
         email = self.partner_email or self.partner_id.email or ""
         phone = self.partner_phone or self.partner_id.phone or ""
@@ -122,12 +122,14 @@ class PaymentTransaction(models.Model):
         partner_invoice_id = self.sale_order_ids.mapped("partner_invoice_id")[0]
         partner_shipping_id = self.sale_order_ids.mapped("partner_shipping_id")[0]
         
+        unit_price = 0.0
         for sale_id in self.sale_order_ids:
             for line_id in sale_id.order_line:
+                unit_price = (line_id.price_total / line_id.product_uom_qty)
                 line_val = {
                             "itemname": line_id.product_id.name,
                             "quantity": str(int(line_id.product_uom_qty)),
-                            "unitprice": str("{:.2f}".format(line_id.price_unit)),
+                            "unitprice": str("{:.2f}".format(unit_price)),
                             "totalprice": str("{:.2f}".format(line_id.price_total))
                           }
                 orders.append(line_val)
