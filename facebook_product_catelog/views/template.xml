@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- feed xml template design. updated xml file -->
+	<template id="rss">
+		&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+		&lt;rss xmlns:g="http://base.google.com/ns/1.0" version="2.0"&gt;
+		<channel>
+			<title>
+				<t t-esc="res_company.name" />
+			</title>
+			
+			<t t-foreach="products" t-as="product">
+				<t t-set="has_variants"
+					t-value="product.product_variant_count > 1" />
+				<t t-foreach="product.product_variant_ids" t-as="variant">
+					<item>
+						<!-- The following attributes are always required -->
+						<id>
+							<t t-esc="'%s%s' % (product.id, '-%s' % variant.id if has_variants else '')" />
+						</id>
+						<title>
+							
+							<t t-esc="variant.name" />
+						</title>
+						<t>
+							<f_link>
+								<t t-esc="'%s/shop/product/%s' % (url_root, slug(product))" />
+							</f_link>
+						</t>
+						
+						<t t-if="product.description_sale">
+							<description>
+								
+								<t t-esc="'%s' % product.description_sale" />
+							</description>
+						</t>
+						
+						<image_link>
+							
+							<t
+								t-esc="'%s%s' % (url_root, website.image_url(variant, 'image_1024'))" />
+						</image_link>
+						<t t-if="product.awb_condition">
+							<condition>
+								<t t-esc="product.awb_condition" />
+							</condition>
+						</t>
+						<availability>
+							<t
+								t-esc="'%s' % ('in stock' if variant.qty_available > 0 else 'out of stock')" />
+						</availability>
+						<price>
+							<t t-esc="'%s %s' % (product.list_price, currency_name.name)" />
+						</price>
+						<!-- The following attributes are required for some products -->
+						<t t-if="product.google_category_id">
+							
+								<google_product_category>
+									
+									<t t-esc="product.google_category_id.name" />
+								</google_product_category>
+							
+						</t>
+						
+						<t t-if="product.awb_brand">
+							<brand>
+							
+								<t t-esc="'%s' % product.awb_brand" />
+							</brand>
+						</t>
+						<t t-if="product.list_price != product.price">
+							<sale_price>
+								<t
+									t-esc="'%s %s' % (product.price, currency_name.name)" />
+							</sale_price>
+							
+						</t>
+						<!-- The following attribute is required for product with variants -->
+						<t t-if="has_variants">
+							<item_group_id>
+								<t t-esc="product.id" />
+							</item_group_id>
+						</t>
+						
+						
+
+					</item>
+				</t>
+			</t>
+		</channel>
+		&lt;/rss&gt;
+	</template>
+</odoo>

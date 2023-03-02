@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<!-- Design of facebook key placeholder  -->
+    <record id="website_config_settings_view_form_facebook_pixel" model="ir.ui.view">
+        <field name="name">website.config.settings.view.form.facebook.pixel</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='google_analytics_setting']" position="after">
+                <div class="col-12 col-lg-6 o_setting_box" id="facebook_pixel_configuration">
+					<!-- Left Side Check Box -->
+                    <div class="o_setting_left_pane">
+                        <field name="website_facebook_pixel"/>
+                    </div>
+                    <!-- Right Side Details Section -->
+                    <div class="o_setting_right_pane">
+                        <label for="website_facebook_pixel"/>
+                        <span class="fa fa-facebook-square fa-lg" title="Values set here are website-specific." groups="website.group_multi_website"/>
+                        <div class="text-muted">
+                            Track Website Activities, Improve your return on Advertising, Reach New and Existing Customers in Facebook Advertising
+                        </div>
+                        <div class="content-group" attrs="{'invisible': [('website_facebook_pixel', '=', False)]}">
+                            <div class="row mt16">
+                                <label class="col-lg-3 o_light_label" string="Tracking ID" for="facebook_pixel_key"/>
+                                <field name="facebook_pixel_key" placeholder="XXXXXXXXXXXXXXXX"
+                                    attrs="{'required': [('website_facebook_pixel', '=', True)]}"/>
+                            </div>
+                        </div>
+                        <!-- Facebook Pixel Configuration Steps : After click the check box shown -->
+                        <div attrs="{'invisible': [('website_facebook_pixel', '=', False)]}" name="facebook_pixel_help">
+                            <a href="https://www.facebook.com/business/help/952192354843755" class="oe_link" target="_blank">
+                                <i class="fa fa-arrow-right"></i> How to Configure Facebook Pixel
+                            </a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Design of facebook domain verification key placeholder  -->
+    <record id="view_website_form" model="ir.ui.view">
+        <field name="name">view.website.form.inherit.facebook.domain.verification</field>
+        <field name="model">website</field>
+        <field name="inherit_id" ref="website.view_website_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='other']" position="after">
+                <group string="Facebook Domain Verification" name="facebook">
+                    <field name="facebook_domain_verification_code" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

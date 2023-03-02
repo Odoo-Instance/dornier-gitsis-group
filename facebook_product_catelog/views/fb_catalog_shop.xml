@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<odoo>
+	<!-- catalog tree design -->
+	<record id="fb_catalog_tree_view" model="ir.ui.view">
+		<field name="name">awb.fb.catalog.tree</field>
+		<field name="model">awb.fb.catalog</field>
+		<field name="arch" type="xml">
+			<tree>
+                <field name="name" modifiers="{&quot;required&quot;: true}"/>
+                <field name="awb_content_language_id" can_create="true" can_write="true" modifiers="{&quot;required&quot;: true}"/>
+            </tree>
+		</field>
+	</record>
+	<!-- form design , commented fields -->
+	<record id="fb_catalog_form_view" model="ir.ui.view">
+		<field name="name">awb.fb.catalog.form</field>
+		<field name="model">awb.fb.catalog</field>
+		<field name="arch" type="xml">
+			<form string="Facebook Catalog Form">
+                <header>
+                  <!-- <button name="create_xml" class="btn-warning" type="object" string="Manually Create Feeds"/> -->
+                  
+                </header>
+                <sheet>
+                  <div class="oe_button_box" name="button_box">
+                      <!-- <button class="oe_stat_button" name="test_function" type="object" icon="fa-paperclip">
+                        <field string="Attachment" name="mapping_count" widget="statinfo" modifiers="{&quot;readonly&quot;: true}"/>
+                      </button> -->
+                  </div>
+                  <!--<field name="id" invisible="1" on_change="1" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>-->
+
+                  <group col="4">
+                    <h2><field name="name" placeholder="NAME" modifiers="{&quot;required&quot;: true}"/></h2>
+                  </group>
+                    <group col="4">
+                      <field name="website_id" required="1" options="{'no_open': True, 'no_create': True}" can_create="true" can_write="true" modifiers="{&quot;required&quot;: true}"/>
+                      <!--<field name="awb_content_language_id" options="{'no_open': True, 'no_create': True}" can_create="true" can_write="true" modifiers="{&quot;required&quot;: true}"/>-->
+                      <field name="awb_pricelist_id"  options="{'no_open': True, 'no_create': True}" />
+                      <field name="awb_shop_url" required="1" on_change="1" modifiers="{&quot;required&quot;: true}"/>
+                      <field name="awb_currency_id" options="{'no_open': True}" can_create="true" can_write="true" modifiers="{&quot;readonly&quot;: true}"/>
+                      <!--<field name="awb_field_mapping_id" can_create="true" can_write="true" modifiers="{&quot;required&quot;: true}"/>-->
+                      
+                      <field name="awb_warehouse_id" options="{'no_open': True}" can_create="true" can_write="true" modifiers="{}"/>
+                    </group>
+                 
+                    
+                    <group>
+                      <group>
+                        <field name="awb_security" string="Feed Security" widget="radio" modifiers="{}"/>
+
+                        <field name="awb_feed_url" modifiers="{&quot;readonly&quot;: true}"/>
+                      </group>
+                      <!-- <div class="text-danger">
+                        <p>Automatic: Feed URL will be accessible publicly and can be used inside the Facebook catalog for regular fetch.</p>
+                        <p>Manual: Feed URL will not be accessible publicly and XML feed will be uploaded manually on the Facebook catalog.</p>
+                        <p>If you will re-generate token enabled feed URL then you will have to update on Facebook too.</p>
+                      </div> -->
+                    </group>
+                    <notebook>
+                    <page name="product_selection_method" string="Product Select">
+                    <group col="2">
+                    <field name="awb_product_selection_type" string="Product Selection" widget="radio" modifiers="{}"/>
+                  </group>
+                    <group attrs="{'invisible': [('awb_product_selection_type', '=', 'category')]}" modifiers="{&quot;invisible&quot;: [[&quot;awb_product_selection_type&quot;, &quot;=&quot;, &quot;category&quot;]]}">
+                      <group attrs="{'invisible' : [('awb_product_selection_type', '!=', 'domain')]}" modifiers="{&quot;invisible&quot;: [[&quot;awb_product_selection_type&quot;, &quot;!=&quot;, &quot;domain&quot;]]}">
+                        <field name="awb_domain" attrs="{'invisible': [('awb_product_selection_type', '!=', 'domain')],'required': [('awb_product_selection_type', '=', 'domain')]}" modifiers="{&quot;invisible&quot;: [[&quot;awb_product_selection_type&quot;, &quot;!=&quot;, &quot;domain&quot;]], &quot;required&quot;: [[&quot;awb_product_selection_type&quot;, &quot;=&quot;, &quot;domain&quot;]]}"/>
+                        <field name="awb_limit" attrs="{'invisible': [('awb_product_selection_type', '!=', 'domain')],'required': [('awb_product_selection_type', '=', 'domain')]}" modifiers="{&quot;invisible&quot;: [[&quot;awb_product_selection_type&quot;, &quot;!=&quot;, &quot;domain&quot;]], &quot;required&quot;: [[&quot;awb_product_selection_type&quot;, &quot;=&quot;, &quot;domain&quot;]]}"/>
+                    </group>
+                        <field name="awb_product_rel_ids" attrs="{'invisible': [('awb_product_selection_type', '!=', 'manual')]}" can_create="true" can_write="true" modifiers="{&quot;invisible&quot;: [[&quot;awb_product_selection_type&quot;, &quot;!=&quot;, &quot;manual&quot;]]}">
+                          </field>
+
+                    </group>
+                    <group attrs="{'invisible': [('awb_product_selection_type', '!=', 'category')]}" modifiers="{&quot;invisible&quot;: [[&quot;awb_product_selection_type&quot;, &quot;!=&quot;, &quot;category&quot;]]}">
+                      <field name="awb_public_category_ids" widget="many2many_tags" attrs="{'invisible': [('awb_product_selection_type', '!=', 'category')],'required': [('awb_product_selection_type', '=', 'category')]}" can_create="true" can_write="true" modifiers="{&quot;invisible&quot;: [[&quot;awb_product_selection_type&quot;, &quot;!=&quot;, &quot;category&quot;]], &quot;required&quot;: [[&quot;awb_product_selection_type&quot;, &quot;=&quot;, &quot;category&quot;]]}"/>
+                    </group>
+                  </page>
+                  <!-- <page name="cron_detail" string="Cron Details">
+                    <group>
+                    <field name="crone_id" attrs="{'invisible': [('crone_id', '=', False)]}" can_create="true" can_write="true" modifiers="{&quot;invisible&quot;: [[&quot;crone_id&quot;, &quot;=&quot;, false]], &quot;readonly&quot;: true}"/>
+                  </group>
+                  <button class="oe_button" string="Create Cron" name="create_cron" type="object" icon="fa-folder-open" attrs="{'invisible': [('crone_id', '!=', False)]}" modifiers="{&quot;invisible&quot;: [[&quot;crone_id&quot;, &quot;!=&quot;, false]]}"/>
+                  </page> -->
+                  </notebook>
+
+                </sheet>
+            </form>
+		</field>
+	</record>
+	
+	<!-- menu item -->
+	<record id="action_fb_catalog_menu" model="ir.actions.act_window">
+	   <field name="name">Facebook Catalog</field>
+	   <field name="res_model">awb.fb.catalog</field>
+	   <field name="view_mode">tree,form</field>
+	   <field name="view_id" ref="fb_catalog_tree_view"/>
+	   <field name="help" type="html">
+	       <p class="o_view_nocontent_smiling_face">
+	           Generate Facebook catalog
+	       </p>
+	   </field>
+	</record>
+	<menuitem id="menu_fb_catalog"
+         name="FB Catalog"
+         parent="menu_catalog_fb"
+         action="action_fb_catalog_menu"
+         sequence="2"/>
+</odoo>

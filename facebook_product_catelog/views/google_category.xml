@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<odoo>
+<data>
+	<!-- google category design -->
+	<record id="google_category_form_view" model="ir.ui.view">
+		<field name="name">google.category.form</field>
+		<field name="model">awb.google.category</field>
+		<field name="arch" type="xml">
+			<form string="Google Category">
+				<sheet>
+					<group>
+						<field name="google_category_name" />
+						<field name="g_cate_id" string="Category Id" />
+					</group>
+	
+				</sheet>
+			</form>
+		</field>
+	</record>
+			
+	<!-- form design -->
+	<record id="google_category_tree_view" model="ir.ui.view">
+		<field name="name">google.category.tree</field>
+		<field name="model">awb.google.category</field>
+		<field name="arch" type="xml">
+			<tree string="Google Category">
+	               <field name="google_category_name"/>
+	               <field name="g_cate_id" string="Category Id"/>
+	           </tree>
+		</field>
+	</record>
+	<!--menu action item  -->
+	<record id="action_google_category_menu" model="ir.actions.act_window">
+	   <field name="name">Google Category</field>
+	   <field name="res_model">awb.google.category</field>
+	   <field name="view_mode">tree,form</field>
+	   <field name="view_id" ref="google_category_tree_view"/>
+	   <field name="help" type="html">
+	       <p class="o_view_nocontent_smiling_face">
+	           Generate Google category
+	       </p>
+	   </field>
+	</record>
+	<!--menu item  -->
+	
+	<menuitem id="menu_facebook_catalog"
+            name="Facebook Catalog"
+            sequence="10"/>
+		
+	<menuitem id="menu_catalog_fb"
+         name="Catalog"
+         parent="menu_facebook_catalog"
+         sequence="1"/>
+      <!--commented menu-->
+    <!--<menuitem id="menu_mapping_fb"
+         name="Mapping"
+         parent="menu_facebook_catalog"
+         sequence="2"/>
+	<menuitem id="menu_google_category" name="Google Category" parent="menu_mapping_fb" action="action_google_category_menu" />-->
+         
+	
+    
+   
+    
+    
+    
+    <!--<menuitem id="menu_setting_fb"
+         name="Settings"
+         parent="menu_facebook_catalog"
+         sequence="3"/>-->
+</data>
+</odoo>

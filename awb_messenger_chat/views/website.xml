@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<!-- Design of facebook messenger placeholder  -->
+    <record id="view_website_form_inherit" model="ir.ui.view">
+        <field name="name">view.website.form.inherit.facebook.page.id</field>
+        <field name="model">website</field>
+        <field name="inherit_id" ref="website.view_website_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='other']" position="after">
+                <group string="Facebook Page Id" name="facebook">
+                    <field name="facebook_page_id" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+    
+    
+</odoo>

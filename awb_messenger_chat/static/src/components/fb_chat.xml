@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+	<!-- Extended CRM list View inherit -->
+	<t t-extend="LeadMiningRequest.generate_leads_button">
+        <t t-jquery="button" t-operation="after">
+        	<div class="fb_messenger_chat">
+        		<div id="fb-root"></div>
+			    <div id="fb-customer-chat" class="fb-customerchat">
+			       
+			    </div>
+        	</div>
+        </t>
+        
+    </t>
+    
+ 	<!-- added div in left side of web control panel for messenger chat-->
+	<template  t-inherit="web.Legacy.ControlPanel" t-inherit-mode="extension">
+		
+		<xpath expr="//div[hasclass('o_cp_bottom_left')]" position="after">
+	    	<div class="fb_messenger_chat_help">
+	    	<div id="fb-root"></div>
+			    <div id="fb-customer-chat" class="fb-customerchat">
+			       
+			    </div></div>
+	    </xpath>
+	</template>
+</templates>
