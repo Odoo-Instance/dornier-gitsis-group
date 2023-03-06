@@ -24,7 +24,8 @@ class ResConfigSettings(models.TransientModel):
         # print('--------==>>> partner_id', partner_id)
         if not partner_id:
             partner_id = self.env['res.partner'].create({
-                'name' : name
+                'name' : name,
+                'firstname' : name,
             })
             self._cr.commit()
         return partner_id and partner_id.id or False
