@@ -19,7 +19,9 @@ class ResConfigSettings(models.TransientModel):
     automation_sale_file_type = fields.Selection(related="company_id.automation_sale_file_type", string='File Type', default='XLS', readonly=False)
 
     def _find_partner_id(self, name, name2=False):
+        # print('--------==>>> name, name2', name, name2)
         partner_id = self.env['res.partner'].search([('name','=', name)], limit=1)
+        # print('--------==>>> partner_id', partner_id)
         if not partner_id:
             partner_id = self.env['res.partner'].create({
                 'name' : name
@@ -94,14 +96,18 @@ class ResConfigSettings(models.TransientModel):
             return 'draft'
 
     def _convert_to_date(self, date_):
+        # print('--------==>>> date_', date_)
         date_ = date_.split('.')[0]
-        if isinstance(int(date_), int or float):
-            awb_date = (int(date_) - 25569) * 24 * 60 * 60 * 1000
-            my_datetime = datetime.fromtimestamp(awb_date / 1000)
-            
-            return my_datetime
+        # print('--------==>>> date_', date_)
+        if date_ and date_.isdigit():
+            if isinstance(int(date_), int or float):
+                awb_date = (int(date_) - 25569) * 24 * 60 * 60 * 1000
+                my_datetime = datetime.fromtimestamp(awb_date / 1000)    
+                return my_datetime
+        elif date_ != '' and isinstance(date_, str):
+            return datetime.strptime(date_, '%Y-%m-%d %H:%M:%S')
         else:
-            return date_
+            return False
 
     def auto_import_sales(self):
         if self.automation_sale_file:
@@ -173,7 +179,7 @@ class ResConfigSettings(models.TransientModel):
                                 # Confirmation 1Mode : 36
                                 'state' : self._convert_to_state_selection(line[37]),
                             }
-                            print('--------==>>> order_vals', order_vals)
+                            # print('--------==>>> order_vals', order_vals)
                             if order_vals.get('partner_id') == '':
                                 continue
 
@@ -207,9 +213,9 @@ class ResConfigSettings(models.TransientModel):
                             'discount' : float(line[23]) if line[23] else 0.0,
                             'order_id' : last_order_id and last_order_id.id,
                         }
-                        print('--------==>>> order_line_vals', order_line_vals)
+                        # print('--------==>>> order_line_vals', order_line_vals)
                         last_line_id = self.env['sale.order.line'].create(order_line_vals)
-
+                        _logger.info('----------------------- row_no : %s ' % row_no)
                 message = 'All Records imported successfully'
                 classname = 'bg-success'
                 tip_type = 'success'
@@ -230,7 +236,7 @@ class ResConfigSettings(models.TransientModel):
                 return notification
 
                 # except Exception as e:
-                #     print(e)
+                #     # print(e)
                 #     raise ValidationError(_("Please Select Valid File Format !  or "+str(e)))
 
 
