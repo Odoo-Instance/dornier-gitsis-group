@@ -28,12 +28,26 @@
 							</f_link>
 						</t>
 						
-						<t t-if="product.description_sale">
+						<!--<t t-if="product.description_sale">
 							<description>
 								
 								<t t-esc="'%s' % product.description_sale" />
 							</description>
+						</t>-->
+						<!--changed condition-->
+						<t>
+							<t t-if="product.description_sale">
+								<description>	
+									<t t-esc="'%s' % product.description_sale" />
+								</description>
+							</t>
+							<t t-else="">
+								<description>	
+									<t t-esc="'%s' % product.description" />
+								</description>
+							</t>
 						</t>
+
 						
 						<image_link>
 							

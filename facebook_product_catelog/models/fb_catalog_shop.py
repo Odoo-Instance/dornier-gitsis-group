@@ -23,7 +23,7 @@ API_VERSION = 'v4'
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 class FbCatalog(models.Model):
-    """variable declaration"""
+    """variable declaration, created new fields"""
     _name = 'awb.fb.catalog'
     _description = "Facebook catalog"
     
@@ -46,6 +46,8 @@ class FbCatalog(models.Model):
     awb_public_category_ids = fields.Many2many('product.public.category', string="Category")
     awb_domain = fields.Char(string="Domain")
     awb_product_rel_ids = fields.Many2many('product.template', string='Products',domain="[('sale_ok', '=', True),('website_published','=',True)]")
+    awb_rel_name = fields.Char(compute='_compute_product')
+    
     
     """Update new method for creating feed for facebook"""
     @api.model
@@ -231,6 +233,16 @@ class FbCatalog(models.Model):
             datasupload.update({'url':t,
                                 'ir_attach':irattachment})
         return datasupload
+    
+    def _compute_product(self):
+        #updating the attributes        
+        items = self.env['awb.fb.catalog'].search([('id','=',self.id)])
+        new_vals={}
+        vals = {}
+        for i in items:
+            up = i.generate_feedfb(vals, new_vals)            
+            i.update({'awb_feed_url':up.get('url')})
+        self.awb_rel_name = 'exam'
     
     def cron_product_update(self):
         """product update method"""

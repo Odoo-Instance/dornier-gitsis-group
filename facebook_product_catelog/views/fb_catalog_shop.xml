@@ -11,7 +11,7 @@
             </tree>
 		</field>
 	</record>
-	<!-- form design , commented fields -->
+	<!-- form design , commented fields, added field and note -->
 	<record id="fb_catalog_form_view" model="ir.ui.view">
 		<field name="name">awb.fb.catalog.form</field>
 		<field name="model">awb.fb.catalog</field>
@@ -41,6 +41,7 @@
                       <!--<field name="awb_field_mapping_id" can_create="true" can_write="true" modifiers="{&quot;required&quot;: true}"/>-->
                       
                       <field name="awb_warehouse_id" options="{'no_open': True}" can_create="true" can_write="true" modifiers="{}"/>
+                      <field name="awb_rel_name" invisible="1"/>
                     </group>
                  
                     
@@ -50,11 +51,11 @@
 
                         <field name="awb_feed_url" modifiers="{&quot;readonly&quot;: true}"/>
                       </group>
-                      <!-- <div class="text-danger">
-                        <p>Automatic: Feed URL will be accessible publicly and can be used inside the Facebook catalog for regular fetch.</p>
-                        <p>Manual: Feed URL will not be accessible publicly and XML feed will be uploaded manually on the Facebook catalog.</p>
-                        <p>If you will re-generate token enabled feed URL then you will have to update on Facebook too.</p>
-                      </div> -->
+                       <div class="text-danger">
+                        <p>Note: All products should have values for brand, condition and sale description.</p>
+                        <!--<p>Manual: Feed URL will not be accessible publicly and XML feed will be uploaded manually on the Facebook catalog.</p>
+                        <p>If you will re-generate token enabled feed URL then you will have to update on Facebook too.</p>-->
+                      </div>
                     </group>
                     <notebook>
                     <page name="product_selection_method" string="Product Select">
