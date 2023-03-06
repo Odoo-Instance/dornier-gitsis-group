@@ -13,4 +13,11 @@ class FbFields(models.Model):
     awb_gtin = fields.Char(string="GTIN")
     awb_mpno = fields.Char(string="Mpno")
     image_link = fields.Char(string = "Image URL")
-    awb_condition = fields.Char(string = "Condition")
+    awb_condition = fields.Selection([('new', 'New'), 
+                                      ('refurbished', 'Refurbished'),
+                                      ('used', 'Used'),
+                                      ('used_like_new', 'Used like new'),
+                                      ('used_good', 'Used good'),
+                                      ('used_fair', 'Fairly used'),
+                                      ('cpo', 'CPO'),
+                                      ('open_box_new', 'Open box new'),] ,string = "Condition")
