@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_stock_inherit" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.automation.stock</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@data-key='stock']/h2[1]" position="before">
+                <h2>Sales Automation</h2>
+                <div class="row mt16 o_settings_container" name="stock_auto_setting_container">
+                    <div class="col-12 col-lg-6 o_setting_box" id="process_stock_auto">
+                        <label for="automation_sale_file_type" string="File Type"
+                            class="col-lg-4 o_light_label" />
+                        <field name="automation_sale_file_type" class="oe_inline" />
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box" id="process_stock_auto">
+                        <label for="automation_sale_file" string="Upload File"
+                            class="col-lg-4 o_light_label" />
+                        <field name="automation_sale_file" class="oe_inline" widget="binary" />
+                        <button string="Import" class="btn btn-primary m-1" type="object"
+                            name="auto_import_sales" />
+                        <a href="/awb_sale_automation/static/src/Sample_XLS-CSV File/Orders Test.xlsx"
+                            class="btn btn-info" role="button">Sample File</a>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
