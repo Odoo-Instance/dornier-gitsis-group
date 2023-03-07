@@ -23,10 +23,13 @@ class ResConfigSettings(models.TransientModel):
         partner_id = self.env['res.partner'].search([('name','=', name)], limit=1)
         # print('--------==>>> partner_id', partner_id)
         if not partner_id:
-            partner_id = self.env['res.partner'].create({
-                'name' : name,
-                'firstname' : name,
-            })
+            try:
+                partner_id = self.env['res.partner'].create({
+                    'name' : name,
+                    'firstname' : name,
+                })
+            except Exception as e:
+                partner_id = self.env['res.partner'].search([('name','=','Public user')], limit=1)
             self._cr.commit()
         return partner_id and partner_id.id or False
     

@@ -6,7 +6,7 @@ import logging
 
 from odoo import api, fields, models
 
-from .. import exceptions
+# from .. import exceptions
 
 _logger = logging.getLogger(__name__)
 
@@ -190,17 +190,17 @@ class ResPartner(models.Model):
             record.lastname = parts["lastname"]
             record.firstname = parts["firstname"]
 
-    @api.constrains("firstname", "lastname")
-    def _check_name(self):
-        """Ensure at least one name is set."""
-        for record in self:
-            if all(
-                (
-                    record.type == "contact" or record.is_company,
-                    not (record.firstname or record.lastname),
-                )
-            ):
-                raise exceptions.EmptyNamesError(record)
+    # @api.constrains("firstname", "lastname")
+    # def _check_name(self):
+    #     """Ensure at least one name is set."""
+    #     for record in self:
+    #         if all(
+    #             (
+    #                 record.type == "contact" or record.is_company,
+    #                 not (record.firstname or record.lastname),
+    #             )
+    #         ):
+    #             raise exceptions.EmptyNamesError(record)
 
     @api.model
     def _install_partner_firstname(self):
